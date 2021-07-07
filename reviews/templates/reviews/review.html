@@ -14,7 +14,12 @@
         {% endif %} 
         <label for="username">Your name</label>
         <input id="username" name="username" type="text"> {% endcomment %}
-        {{ form }}
+        {% comment %} {{ form }} {% endcomment %}
+        <div class="form-control {% if form.user_name.errors %}errors{% endif %} %}">
+            {{ form.user_name.label_tag }}
+            {{ form.user_name }}
+            {{ form.user_name.errors }}
+        </div>
         <button>Send</button>
     </form>
 </body>
