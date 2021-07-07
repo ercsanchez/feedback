@@ -7,6 +7,7 @@ from .forms import ReviewForm
 
 
 def review(request):
+    # form = None   # apparently python variables dont have block scoping, so form can be accessed outside of if-block
     if request.method == "POST":
         form = ReviewForm(request.POST)
 
@@ -14,7 +15,9 @@ def review(request):
             print(form.cleaned_data)
             return HttpResponseRedirect('/thank_you')
 
-    form = ReviewForm()
+    # if request.method is not "POST" create a blank form
+    else:
+        form = ReviewForm()
 
     return render(request, 'reviews/review.html', {
         "form": form
@@ -23,3 +26,4 @@ def review(request):
 
 def thank_you(request):
     return render(request, 'reviews/thank_you.html')
+ 
