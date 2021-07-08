@@ -45,3 +45,12 @@ class ReviewsListView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['reviews'] = Review.objects.all()
         return context
+
+
+class SingleReviewView(TemplateView):
+    template_name = 'reviews/single_review.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['review'] = Review.objects.get(pk=kwargs['id'])
+        return context
