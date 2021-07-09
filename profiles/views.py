@@ -3,12 +3,7 @@ from django.views import View
 from django.http import HttpResponseRedirect
 
 from .forms import ProfileForm
-
-
-def store_file(file):
-    with open('temp/image.jpg', 'wb+') as dest:
-        for chunk in file.chunks():
-            dest.write(chunk)
+from .models import UserProfile
 
 
 # Create your views here.
@@ -25,11 +20,8 @@ class CreateProfileView(View):
         submitted_form = ProfileForm(request.POST, request.FILES)
 
         if submitted_form.is_valid():
-            # academind solution - DOESN'T WORK - ERROR: MultiValueDictKeyError
-            # this uses input tag attribute name='image' but this was deleted and replaced with {{ form }}
-            # store_file(request.FILES['image'])  
-
-            store_file(request.FILES['user_image'])  # this refers to form fiedl: user_image
+            profile = UserProfile(image=request.FILES['user_image'])
+            profile.save()
             return HttpResponseRedirect('/profiles')
 
         return render(request, 'profiles/create_profile.html', {
