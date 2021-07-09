@@ -1,4 +1,5 @@
 from django import forms
 
-class ProfileForm(forms.Form):
-    user_image = forms.ImageField()
+# NO LONGER NEEDED BECAUSE OF CREATEVIEW
+# class ProfileForm(forms.Form):
+#     user_image = forms.ImageField()
