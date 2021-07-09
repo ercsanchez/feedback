@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponseRedirect
 
+from .forms import ProfileForm
+
 
 def store_file(file):
     with open('temp/image.jpg', 'wb+') as dest:
@@ -14,8 +16,22 @@ def store_file(file):
 
 class CreateProfileView(View):
     def get(self, request):
-        return render(request, 'profiles/create_profile.html')
+        form = ProfileForm()
+        return render(request, 'profiles/create_profile.html', {
+            'form': form
+        })
 
     def post(self, request):
-        store_file(request.FILES['image'])
-        return HttpResponseRedirect('/profiles')
+        submitted_form = ProfileForm(request.POST, request.FILES)
+
+        if submitted_form.is_valid():
+            # academind solution - DOESN'T WORK - ERROR: MultiValueDictKeyError
+            # this uses input tag attribute name='image' but this was deleted and replaced with {{ form }}
+            # store_file(request.FILES['image'])  
+
+            store_file(request.FILES['user_image'])  # this refers to form fiedl: user_image
+            return HttpResponseRedirect('/profiles')
+
+        return render(request, 'profiles/create_profile.html', {
+            'form': submitted_form
+        })
